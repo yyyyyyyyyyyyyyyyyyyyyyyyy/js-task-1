@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Powtórka</title>
+<style>
+  #categories { margin-bottom: 20px; }
+  #ingredients { margin-bottom: 20px; }
+  .gallery { display: flex; gap: 10px; margin-bottom: 20px; }
+  #counter { margin-bottom: 20px; }
+  .widget { margin-bottom: 20px; }
+  #boxes div { margin: 5px; }
+  #validation-input { border: 3px solid #bdbdbd; }
+  #validation-input.valid { border-color: #4caf50; }
+  #validation-input.invalid { border-color: #f44336; }
+</style>
+</head>
+<body>
+
+<!-- Zad 1 -->
+<ul id="categories">
+  <li class="item">
+    <h2>Animals</h2>
+    <ul>
+      <li>Cat</li>
+      <li>Hamster</li>
+      <li>Horse</li>
+      <li>Parrot</li>
+    </ul>
+  </li>
+  <li class="item">
+    <h2>Products</h2>
+    <ul>
+      <li>Bread</li>
+      <li>Parsley</li>
+      <li>Cheese</li>
+    </ul>
+  </li>
+  <li class="item">
+    <h2>Technologies</h2>
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+      <li>React</li>
+      <li>Node.js</li>
+    </ul>
+  </li>
+</ul>
+
+<!-- Zad 2 -->
+<ul id="ingredients"></ul>
+
+<!-- Zad 3 -->
+<ul class="gallery"></ul>
+
+<!-- Zad 4 -->
+<div id="counter">
+  <button type="button" data-action="decrement">-1</button>
+  <span id="value">0</span>
+  <button type="button" data-action="increment">+1</button>
+</div>
+
+<!-- Zad 5 -->
+<input type="text" id="name-input" placeholder="Please enter your name" />
+<h1>Hello, <span id="name-output">Anonymous</span>!</h1>
+
+<!-- Zad 6 -->
+<input type="text" id="validation-input" data-length="6" placeholder="Please enter 6 symbols" />
+
+<!-- Zad 7 -->
+<input id="font-size-control" type="range" min="16" max="96" />
+<br />
+<span id="text">Abracadabra!</span>
+
+<!-- Zad 8 -->
+<form class="login-form">
+  <label>
+    Email
+    <input type="email" name="email" />
+  </label>
+  <label>
+    Password
+    <input type="password" name="password" />
+  </label>
+  <button type="submit">Login</button>
+</form>
+
+<!-- Zad 9 -->
+<div class="widget">
+  <p>Background color: <span class="color">-</span></p>
+  <button type="button" class="change-color">Change color</button>
+</div>
+
+<!-- Zad 10 -->
+<div id="controls">
+  <input type="number" min="1" max="100" step="1" />
+  <button type="button" data-create>Create</button>
+  <button type="button" data-destroy>Destroy</button>
+</div>
+<div id="boxes"></div>
+
+<script>
+// Zad 1
+
+const kategorie = document.querySelectorAll('#categories .item');
+console.log('Number of categories:', kategorie.length);
+kategorie.forEach(kategoria => {
+  const nazwaKategorii = kategoria.querySelector('h2').textContent;
+  const liczbaElementowKategorii = kategoria.querySelectorAll('ul li').length;
+  console.log(`Category: ${nazwaKategorii}`);
+  console.log(`Elements: ${liczbaElementowKategorii}`);
+});
+
+// Zad 2
+
+const skladniki = [
+  "Potatoes",
+  "Mushrooms",
+  "Garlic",
+  "Tomatos",
+  "Herbs",
+  "Condiments"
+];
+
+const listaSkladnikow = document.querySelector('#ingredients');
+
+const elementySkladnikow = skladniki.map(skladnik => {
+  const li = document.createElement('li');
+  li.textContent = skladnik;
+  li.classList.add('item');
+  return li;
+});
+
+listaSkladnikow.append(...elementySkladnikow);
+
+// Zad 3
+
+const obrazy = [
+  { url: "https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?dpr=2&h=750&w=1260", alt: "White and Black Long Fur Cat" },
+  { url: "https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?dpr=2&h=750&w=1260", alt: "Orange and White Koi Fish Near Yellow Koi Fish" },
+  { url: "https://images.pexels.com/photos/219943/pexels-photo-219943.jpeg?dpr=2&h=750&w=1260", alt: "Group of Horses Running" },
+];
+
+const galeria = document.querySelector('.gallery');
+
+const elementyGalerii = obrazy.map(obraz => {
+  return `<li><img src="${obraz.url}" alt="${obraz.alt}"></li>`;
+}).join('');
+
+galeria.insertAdjacentHTML('beforeend', elementyGalerii);
+
+// Zad 4
+
+let wartoscLicznika = 0;
+const licznik = document.querySelector('#value');
+const przyciskZwieksz = document.querySelector('button[data-action="increment"]');
+const przyciskZmniejsz = document.querySelector('button[data-action="decrement"]');
+
+przyciskZwieksz.addEventListener('click', () => {
+  wartoscLicznika += 1;
+  licznik.textContent = wartoscLicznika;
+});
+
+przyciskZmniejsz.addEventListener('click', () => {
+  wartoscLicznika -= 1;
+  licznik.textContent = wartoscLicznika;
+});
+
+// Zad 5
+
+const inputImie = document.querySelector('#name-input');
+const outputImie = document.querySelector('#name-output');
+
+inputImie.addEventListener('input', () => {
+  outputImie.textContent = inputImie.value ? inputImie.value : 'Anonymous';
+});
+
+// Zad 6
+
+const inputWalidacja = document.querySelector('#validation-input');
+
+inputWalidacja.addEventListener('blur', () => {
+  const wymaganaDlugosc = parseInt(inputWalidacja.dataset.length, 10);
+  if (inputWalidacja.value.length === wymaganaDlugosc) {
+    inputWalidacja.classList.add('valid');
+    inputWalidacja.classList.remove('invalid');
+  } else {
+    inputWalidacja.classList.add('invalid');
+    inputWalidacja.classList.remove('valid');
+  }
+});
+
+// Zad 7
+
+const kontrolaRozmiaruCzcionki = document.querySelector('#font-size-control');
+const tekst = document.querySelector('#text');
+
+kontrolaRozmiaruCzcionki.addEventListener('input', () => {
+  tekst.style.fontSize = `${kontrolaRozmiaruCzcionki.value}px`;
+});
+
+// Zad 8
+
+const formularzLogowania = document.querySelector('.login-form');
+
+formularzLogowania.addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  const email = formularzLogowania.elements.email.value;
+  const haslo = formularzLogowania.elements.password.value;
+  
+  if (!email || !haslo) {
+    alert('All fields must be filled out');
+    return;
+  }
+  
+  const daneFormularza = {
+    email,
+    haslo
+  };
+  
+  console.log(daneFormularza);
+  formularzLogowania.reset();
+});
+
+// Zad 9
+
+const przyciskZmianaKoloru = document.querySelector('.change-color');
+const spanKolor = document.querySelector('.color');
+const body = document.querySelector('body');
+
+function losowyKolorHex() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+}
+
+przyciskZmianaKoloru.addEventListener('click', () => {
+  const losowyKolor = losowyKolorHex();
+  body.style.backgroundColor = losowyKolor;
+  spanKolor.textContent = losowyKolor;
+});
+
+// Zad 10
+
+const kontrolki = document.querySelector('#controls');
+const przyciskUtworz = kontrolki.querySelector('button[data-create]');
+const przyciskZniszcz = kontrolki.querySelector('button[data-destroy]');
+const pudelka = document.querySelector('#boxes');
+
+function losowyKolorHex() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+}
+
+function utworzPudelka(ilosc) {
+  const nowePudelka = [];
+  for (let i = 0; i < ilosc; i++) {
+    const pudelko = document.createElement('div');
+    pudelko.style.width = `${30 + i * 10}px`;
+    pudelko.style.height = `${30 + i * 10}px`;
+    pudelko.style.backgroundColor = losowyKolorHex();
+    nowePudelka.push(pudelko);
+  }
+  pudelka.append(...nowePudelka);
+}
+
+przyciskUtworz.addEventListener('click', () => {
+  const ilosc = parseInt(kontrolki.querySelector('input').value);
+  if (ilosc > 0) {
+    utworzPudelka(ilosc);
+  }
+});
+
+przyciskZniszcz.addEventListener('click', () => {
+  pudelka.innerHTML = '';
+});
+</script>
+
+</body>
+</html>
